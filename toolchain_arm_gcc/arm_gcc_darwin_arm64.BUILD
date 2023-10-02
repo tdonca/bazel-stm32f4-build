@@ -35,8 +35,9 @@ cc_toolchain_config(
     abi_version = "eabi",
     abi_libc_version = "unknown", #???
     tool_paths = {
-        "gcc": "bin/arm-none-eabi-g++",
-        "cpp": "bin/arm-none-eabi-cpp",
+        # "gcc": "bin/arm-none-eabi-g++", # this should be for C compilation
+        "gcc": "bin/arm-none-eabi-gcc", # C compiler
+        "cpp": "bin/arm-none-eabi-cpp", # C++ compiler
         "ar": "bin/arm-none-eabi-ar",
         "nm": "bin/arm-none-eabi-nm",
         "ld": "bin/arm-none-eabi-ld",
@@ -48,13 +49,31 @@ cc_toolchain_config(
         "llvm-cov": "/bin/false", #??? does not exist
     },
     compile_flags = [
+        "-mcpu=cortex-m4",
+        "-mfpu=fpv4-sp-d16",
+        "-mfloat-abi=hard", 
+        "-mthumb", 
+        "--specs=nano.specs",
+        "-DSTM32F439xx",
+        #"-x assembler-with-cpp", # How to deal with assembly file?
+        "-fstack-usage",
+        "-MMD",
+        "-MP",
         "-isystem", "external/arm_gcc_darwin_arm64/arm-none-eabi/include/c++/12.3.1/arm-none-eabi",
         "-isystem", "external/arm_gcc_darwin_arm64/arm-none-eabi/include/c++/12.3.1",
         "-isystem", "external/arm_gcc_darwin_arm64/arm-none-eabi/include",
         "-isystem", "external/arm_gcc_darwin_arm64/arm-none-eabi/libc/usr/include",
         "-isystem", "external/arm_gcc_darwin_arm64/lib/gcc/arm-none-eabi/12.3.1/include",
-        "--specs=nosys.specs",
     ],
-    link_flags = ["--specs=nosys.specs",],
+    link_flags = [
+        "-mcpu=cortex-m4",
+        "-mfpu=fpv4-sp-d16", 
+        "-mfloat-abi=hard", 
+        "-mthumb", 
+        "--specs=nano.specs",
+        # "--specs=nosys.specs",
+        "-static",
+        # "--specs=nosys.specs",
+    ],
 )
 

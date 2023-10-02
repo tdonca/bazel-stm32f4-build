@@ -1,3 +1,5 @@
+
+
 cc_binary(
     name = "full-project",
     srcs = [
@@ -43,6 +45,25 @@ cc_binary(
         "Drivers/CMSIS/Device/ST/STM32F4xx/Include",
         "Drivers/CMSIS/Include",
     ],
+    copts = [
+        "-std=gnu11", 
+        # "-std=gnu++17",
+        "-Wall",
+        "-Wextra",
+        "-Wsign-conversion",
+        "-g3",
+        "-Og",
+        "-DDEBUG",
+        "-DUSE_HAL_DRIVER",
+    ],
+    additional_linker_inputs = [
+        "//stm32f4329zitx_linker:linker-scripts",
+    ],
+    linkopts = [
+        "-Tstm32f4329zitx_linker/STM32F439ZITX_FLASH.ld", # linker script for specific MCU model
+        "-Wl,-Map=Application.map", # generate map file output
+        "-Wl,--print-memory-usage", # print out memory usage after linking
+    ]
     # copts = [ # Ah! to fix this, the include paths need to be relative to the WORKSPACE file, not the BUILD file
     #     "-ICore/Inc",
     #     "-IDrivers/STM32F4xx_HAL_Driver/Inc",
