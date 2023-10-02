@@ -1,3 +1,4 @@
+# Glob all gnu arm-none-eabi toolchain files
 filegroup(
     name = "all",
     srcs = glob(["**/*",]),
@@ -21,7 +22,8 @@ cc_toolchain(
 # ??? Is this relevant for macos?
 load("@bazel_tools//tools/cpp:unix_cc_toolchain_config.bzl", "cc_toolchain_config")
 
-
+# This toolchain config is specialized to a specific target platform
+# In our case, this is the STM32F439ZIT6 arm processor
 cc_toolchain_config(
     name = "my_cc_toolchain_config",
     cpu = "arm",
